@@ -1,15 +1,19 @@
 package transactions
 
 import (
+	"database/sql"
 	"encoding/csv"
 	"fmt"
 	"golang-challenge/pkg/models"
+	"golang-challenge/repository"
+	"log"
 	"os"
 	"strconv"
 	"strings"
 )
 
-func GetTransactions() *models.TotalTransaction {
+func GetTransactions(db *sql.DB) *models.TotalTransaction {
+	env := os.Getenv("EXECUTION_ENV")
 	file, err := os.Open(os.Getenv("TRANSACTIONS_FILE"))
 	if err != nil {
 		fmt.Println("Error opening file:", err)
@@ -41,6 +45,12 @@ func GetTransactions() *models.TotalTransaction {
 			Amount: Amount,
 		}
 		transactions = append(transactions, transaction)
+		if(env != "AWS") {
+			insert := repository.NewTxRepository(db).Insert(transaction)
+			if !insert {
+				log.Println("Error inserting transaction:", transaction)
+			}
+		}
 	}
 
 	return calculateTotal(transactions)

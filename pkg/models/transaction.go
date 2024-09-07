@@ -3,8 +3,8 @@ package models
 import "fmt"
 
 type Transaction struct {
-	ID          int   `json:"id"`
-	Date string `json:"date"`
+	ID          int   `json:"tx_id"`
+	Date string `json:"tx_date"`
 	Amount      float64 `json:"amount"`
 }
 
@@ -21,13 +21,13 @@ type TotalTransaction struct {
 
 func (t *TotalTransaction) Format() string {
 	var formatted string
-	formatted += "<IMG SRC='stori_savvi.svg'> <H1>Transaction Summary</H1>\n"
+	formatted += "<img src='cid:stori.png' /> <H1>Transaction Summary</H1>\n"
 	formatted += "<table border='0'>\n"
 	formatted +="<tr>\n"
-	formatted += fmt.Sprintf("<td>Total Balance: %.2f <td>\n", t.Total)
+	formatted += fmt.Sprintf("<td>Total Balance: $%.2f <td>\n", t.Total)
 	formatted += "</tr><tr>\n"
-	formatted += fmt.Sprintf("<td>Average credit: %.2f </td>\n", t.Credit)
-	formatted += fmt.Sprintf("<td>Average debit: %.2f </td>\n", t.Debit)
+	formatted += fmt.Sprintf("<td>Average credit: $%.2f </td>\n", t.Credit)
+	formatted += fmt.Sprintf("<td>Average debit: $%.2f </td>\n", t.Debit)
 	formatted += "</tr><tr>\n"
 	formatted += "<th>Monthly Transactions</th>\n"
 	formatted += "</tr><tr>\n"

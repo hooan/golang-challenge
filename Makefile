@@ -1,5 +1,4 @@
 
-GO := go
 BUILD_DIR := build
 BIN_NAME := golang-challenge
 
@@ -10,10 +9,10 @@ all: build
 
 build:
 	@mkdir -p $(BUILD_DIR)
-	$(GO) build -o $(BUILD_DIR)/$(BIN_NAME) .
+	go build -o main ./cmd/$(BIN_NAME) 
 
 run:
-	$(GO) run cmd/${BIN_NAME}/main.go
+	go run cmd/${BIN_NAME}/main.go
 
 clean:
 	@rm -rf $(BUILD_DIR)

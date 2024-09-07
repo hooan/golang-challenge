@@ -1,0 +1,38 @@
+
+name: Deploy to AWS Lambda
+depends-on: Upload Project to S3
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.21
+
+      - name: Build Go project
+        run: go build -o main
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      
+      - name: Deploy to AWS Lambda
+        run: |
+          aws lambda create-function \
+          --function-name stori \
+          --runtime go1.x \
+          --handler main \
+          --zip-file fileb://stori.zip
