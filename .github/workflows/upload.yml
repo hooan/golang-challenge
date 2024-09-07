@@ -33,7 +33,7 @@ jobs:
         run: |
           PACKAGE_NAME="${{ steps.generate_tag_version.outputs.tag }}.zip"
           echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
-          zip -r $PACKAGE_NAME bootstrap
+          zip $PACKAGE_NAME bootstrap
 
       - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
