@@ -9,7 +9,6 @@ on:
         type: string
         required: true
 
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -39,7 +38,7 @@ jobs:
       - name: 'Check S3 Bucket'
         run: |
           aws s3api wait object-exists \
-            --bucket cl-stori \
+            --bucket stori-lambda \
             --key ${{ inputs.version }}.zip \
             --cli-read-timeout 60 \
             --cli-connect-timeout 60
@@ -50,7 +49,7 @@ jobs:
           echo "Update Lambda Function with ${{ inputs.version }}.zip file" >> $GITHUB_STEP_SUMMARY
           aws lambda update-function-code \
             --function-name=stori \
-            --s3-bucket=cl-stori \
+            --s3-bucket=stori-lambda \
             --s3-key=${{ inputs.version }}.zip \
             --cli-read-timeout 60 \
             --cli-connect-timeout 60

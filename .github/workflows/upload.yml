@@ -43,4 +43,4 @@ jobs:
           aws-region: us-east-1
    
       - name: 'Upload to S3 Bucket'
-        run: aws s3 cp ${{ steps.create_package.outputs.package_name }} s3://cl-stori
+        run: aws s3 cp ${{ steps.create_package.outputs.package_name }} s3://stori-lambda
