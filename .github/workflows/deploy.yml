@@ -1,6 +1,6 @@
 
 name: Deploy to AWS Lambda
-depends-on: Upload Project to S3
+
 on:
   push:
     branches:
@@ -21,9 +21,7 @@ jobs:
 
       - name: Build Go project
         run: make build
-        with:
-          go-version: 1.22
-          
+
       - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
