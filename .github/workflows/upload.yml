@@ -19,7 +19,7 @@ jobs:
 
       - name: Build project
         working-directory: ${{ github.workspace }}/cmd/golang-challenge
-        run: go build -o main.go
+        run: GOARCH=amd64 GOOS=linux go build -o bootstrap main.go
 
       - name: 'Generate Tag Version'
         id: generate_tag_version
@@ -31,9 +31,7 @@ jobs:
       - name: 'Create Zip File'
         id: 'create_package'
         run: |
-          PACKAGE_NAME="${{ steps.generate_tag_version.outputs.tag }}.zip"
-          echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
-          zip -r $PACKAGE_NAME .
+          zip -r $PACKAGE_NAME bootstrap
 
       - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -43,4 +41,4 @@ jobs:
           aws-region: us-east-1
    
       - name: 'Upload to S3 Bucket'
-        run: aws s3 cp ${{ steps.create_package.outputs.package_name }} s3://stori-lambda
+        run: aws s3 cp bootstrap.zip s3://stori-lambda

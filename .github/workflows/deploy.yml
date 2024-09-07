@@ -2,12 +2,10 @@
 name: Deploy to AWS Lambda
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Repo Tag Name (Ex.: yyyymmdd-hhmmss)'
-        type: string
-        required: true
+  workflow_run:
+    workflows: ["Upload Project to S3"]
+    types:
+      - completed
 
 jobs:
   deploy:
@@ -39,17 +37,15 @@ jobs:
         run: |
           aws s3api wait object-exists \
             --bucket stori-lambda \
-            --key ${{ inputs.version }}.zip \
+            --key bootstrap.zip \
             --cli-read-timeout 60 \
             --cli-connect-timeout 60
   
       - name: 'Update Source Code'
         run: |
-          echo "Deploy Version: ${{ inputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo "Update Lambda Function with ${{ inputs.version }}.zip file" >> $GITHUB_STEP_SUMMARY
           aws lambda update-function-code \
             --function-name=stori \
             --s3-bucket=stori-lambda \
-            --s3-key=${{ inputs.version }}.zip \
+            --s3-key=bootstrap.zip \
             --cli-read-timeout 60 \
             --cli-connect-timeout 60
