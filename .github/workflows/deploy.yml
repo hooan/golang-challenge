@@ -2,9 +2,13 @@
 name: Deploy to AWS Lambda
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Repo Tag Name (Ex.: yyyymmdd-hhmmss)'
+        type: string
+        required: true
+
 
 jobs:
   deploy:
@@ -30,6 +34,28 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       
+
+
+      - name: 'Check S3 Bucket'
+        run: |
+          aws s3api wait object-exists \
+            --bucket cl-stori \
+            --key ${{ inputs.version }}.zip \
+            --cli-read-timeout 60 \
+            --cli-connect-timeout 60
+  
+      - name: 'Update Source Code'
+        run: |
+          echo "Deploy Version: ${{ inputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "Update Lambda Function with ${{ inputs.version }}.zip file" >> $GITHUB_STEP_SUMMARY
+          aws lambda update-function-code \
+            --function-name=stori \
+            --s3-bucket=cl-stori \
+            --s3-key=${{ inputs.version }}.zip \
+            --cli-read-timeout 60 \
+            --cli-connect-timeout 60
+
+
       - name: Deploy to AWS Lambda
         run: |
           aws lambda create-function \

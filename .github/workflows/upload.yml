@@ -20,8 +20,19 @@ jobs:
       - name: Build project
         run: go build -o cmd/golang-challenge/main.go
 
-      - name: Zip project
-        run: zip -r stori.zip stori
+      - name: 'Generate Tag Version'
+        id: generate_tag_version
+        run: |
+          TAG=$(date +%Y%m%d)-$(date +%H%M%S)
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "Tag Version: $TAG" >> $GITHUB_STEP_SUMMARY
+    
+      - name: 'Create Zip File'
+        id: 'create_package'
+        run: |
+          PACKAGE_NAME="${{ steps.generate_tag_version.outputs.tag }}.zip"
+          echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
+          zip -r $PACKAGE_NAME .
 
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@master
