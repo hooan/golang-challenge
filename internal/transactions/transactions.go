@@ -10,10 +10,32 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
 func GetTransactions(db *sql.DB) *models.TotalTransaction {
 	env := os.Getenv("EXECUTION_ENV")
+	if(env == "AWS") {
+		cfg, err := config.LoadDefaultConfig(context.TODO())
+		if err != nil {
+			log.Println("Error loading AWS config:", err)
+			return nil	
+		}
+		client := s3.NewFromConfig(cfg)	
+		bucket := os.Getenv("BUCKET_NAME")	
+		object := os.Getenv("TRANSACTIONS_FILE")
+		download := files.BucketBasics{S3Client: client}.DownloadFile(bucket, object)
+		if download != nil {
+			log.Println("Error downloading file:", download)
+			return nil
+		}
+		file, err := download.(io.Reader)
+	defer file.Close()
+
+	}else{
+
 	file, err := os.Open(os.Getenv("TRANSACTIONS_FILE"))
 	if err != nil {
 		fmt.Println("Error opening file:", err)
@@ -21,6 +43,7 @@ func GetTransactions(db *sql.DB) *models.TotalTransaction {
 	}
 	defer file.Close()
 
+	}
 	reader := csv.NewReader(file)
 	records, err := reader.ReadAll()
 	if err != nil {
