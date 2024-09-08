@@ -1,10 +1,13 @@
 package transactions
 
 import (
+	"bytes"
+	"context"
 	"database/sql"
 	"encoding/csv"
 	"fmt"
 	"golang-challenge/pkg/models"
+	files "golang-challenge/pkg/services" 
 	"golang-challenge/repository"
 	"log"
 	"os"
@@ -17,6 +20,7 @@ import (
 
 func GetTransactions(db *sql.DB) *models.TotalTransaction {
 	env := os.Getenv("EXECUTION_ENV")
+	var reader *csv.Reader
 	if(env == "AWS") {
 		cfg, err := config.LoadDefaultConfig(context.TODO())
 		if err != nil {
@@ -26,25 +30,24 @@ func GetTransactions(db *sql.DB) *models.TotalTransaction {
 		client := s3.NewFromConfig(cfg)	
 		bucket := os.Getenv("BUCKET_NAME")	
 		object := os.Getenv("TRANSACTIONS_FILE")
-		download := files.BucketBasics{S3Client: client}.DownloadFile(bucket, object)
-		if download != nil {
-			log.Println("Error downloading file:", download)
-			return nil
+		file := files.BucketBasics{S3Client: client}.DownloadFile(bucket, object)
+			if file != nil {
+				log.Println("Error downloading file:", file)
+				return nil
+			}
+		reader = csv.NewReader(bytes.NewReader(file))
+
+		} else {
+			file, err := os.Open(os.Getenv("TRANSACTIONS_FILE"))
+			if err != nil {
+				fmt.Println("Error opening file:", err)
+				return nil
+			}
+		defer file.Close()
+		reader = csv.NewReader(file)
+
 		}
-		file, err := download.(io.Reader)
-	defer file.Close()
 
-	}else{
-
-	file, err := os.Open(os.Getenv("TRANSACTIONS_FILE"))
-	if err != nil {
-		fmt.Println("Error opening file:", err)
-		return nil
-	}
-	defer file.Close()
-
-	}
-	reader := csv.NewReader(file)
 	records, err := reader.ReadAll()
 	if err != nil {
 		fmt.Println("Error reading CSV:", err)
