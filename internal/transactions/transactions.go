@@ -30,8 +30,9 @@ func GetTransactions(db *sql.DB) *models.TotalTransaction {
 		client := s3.NewFromConfig(cfg)	
 		bucket := os.Getenv("BUCKET_NAME")	
 		object := os.Getenv("TRANSACTIONS_FILE")
+	
 		file := files.BucketBasics{S3Client: client}.DownloadFile(bucket, object)
-			if file != nil {
+			if file == nil {
 				log.Println("Error downloading file:", file)
 				return nil
 			}
