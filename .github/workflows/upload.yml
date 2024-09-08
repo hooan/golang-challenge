@@ -19,7 +19,7 @@ jobs:
 
       - name: Build project
         working-directory: ${{ github.workspace }}/cmd/golang-challenge
-        run: make build-lambda
+        run: GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go build -o bootstrap main.go
 
       - name: 'Generate Tag Version'
         id: generate_tag_version
