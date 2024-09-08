@@ -18,13 +18,15 @@ type MyEvent struct {
 }
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+
 
 	if os.Getenv("EXECUTION_ENV") == "AWS" {
 		lambda.Start(HandleRequest)
+	}else{
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
 	}
 
 	 var a app.App
