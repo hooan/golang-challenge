@@ -1,6 +1,6 @@
 module golang-challenge
 
-go 1.23.0
+go 1.23
 
 require github.com/go-mail/mail v2.3.1+incompatible
 
