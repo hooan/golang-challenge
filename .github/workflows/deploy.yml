@@ -22,10 +22,6 @@ jobs:
         with:
           go-version: 1.21
 
-      - name: Build Go project
-        working-directory: ${{ github.workspace }}/cmd/golang-challenge
-        run: go build -o main.go
-
       - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
