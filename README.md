@@ -4,9 +4,9 @@ This repository contains a .
 
 ## Software needed
 
-[![Git Reference](https://pkg.go.dev/badge/golang.org/x/example.svg)](https://pkg.go.dev/golang.org/x/example)
-[![Go Reference](https://pkg.go.dev/badge/golang.org/x/example.svg)](https://go.dev/dl/)
-[![Docker Reference](https://pkg.go.dev/badge/golang.org/x/example.svg)](https://pkg.go.dev/golang.org/x/example)
+[![Git Reference](https://www.svgrepo.com/show/349375/github.svg)](https://github.com)
+[![Go Reference](https://www.svgrepo.com/show/349380/go.svg)](https://go.dev/dl/)
+[![Docker Reference](https://www.svgrepo.com/show/349342/docker.svg)](https://docker.com)
 
 ## Clone the project
 
