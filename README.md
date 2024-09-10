@@ -4,9 +4,9 @@ This repository contains a .
 
 ## Software needed
 
-[![Git Reference](https://www.svgrepo.com/show/349375/github.svg)| height = 100px](https://github.com)
-[![Go Reference](https://www.svgrepo.com/show/349380/go.svg)| height = 100px](https://go.dev/dl/)
-[![Docker Reference](https://www.svgrepo.com/show/349342/docker.svg)| height = 100px](https://docker.com)
+[Git](https://github.com)
+[Go](https://go.dev/dl/)
+[Docker Reference](https://docker.com)
 
 ## Clone the project
 
@@ -17,8 +17,6 @@ $ cd golang-challenge
 
 ## Local 
             
-[![Go Reference](https://pkg.go.dev/badge/golang.org/x/example.svg)](https://pkg.go.dev/golang.org/x/example)
-
  * Configure db (app/config.go)
  * Create an .env file 
       ```
