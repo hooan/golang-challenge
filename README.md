@@ -4,9 +4,9 @@ This repository contains a .
 
 ## Software needed
 
-[![Git Reference](https://www.svgrepo.com/show/349375/github.svg)](https://github.com)
-[![Go Reference](https://www.svgrepo.com/show/349380/go.svg)](https://go.dev/dl/)
-[![Docker Reference](https://www.svgrepo.com/show/349342/docker.svg)](https://docker.com)
+[![Git Reference](https://www.svgrepo.com/show/349375/github.svg)| height = 100px](https://github.com)
+[![Go Reference](https://www.svgrepo.com/show/349380/go.svg)| height = 100px](https://go.dev/dl/)
+[![Docker Reference](https://www.svgrepo.com/show/349342/docker.svg)| height = 100px](https://docker.com)
 
 ## Clone the project
 
